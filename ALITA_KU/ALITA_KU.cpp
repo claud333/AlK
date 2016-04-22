@@ -1,7 +1,7 @@
 #include "stdafx.h" 
 #include <iostream> 
 #include <fstream> 
-#include <vector> 
+#include <cstdlib>
 using namespace std;
 struct komn
 {
@@ -14,35 +14,35 @@ struct komn
 
 
 
-bool schitivanie(vector<komn> &a, char *name) //открытие фаила 
+int schitivanie(komn *st, char *name) //открытие фаила 
 {
 	ifstream fin;
 	fin.open(name);
 	if (!fin.is_open())
 	{
-		cout << "error open";
+		cout << "error open\n";
 		system("pause");
-		return false;
+		exit(0);
 	}
 
 
 	int ball, i = 0;
-	komn dop;
+	
 	while (!fin.eof())
 	{
-
-		fin >> dop.name;
-		fin >> dop.a;
-		fin >> dop.b;
-		a.push_back(dop);
-		a[i].S = (a[i].a)*(a[i].b);
-		a[i].P = 2 * (a[i].a + a[i].b);
+		st = (komn*)realloc(st,((i + 1)*sizeof(komn)));
+		fin >> st[i].name;
+		fin >> st[i].a;
+		fin >> st[i].b;
+		st[i].S = (st[i].a)*(st[i].b);
+		st[i].P = 2 * (st[i].a + st[i].b);
 		i++;
 	}
 	fin.close();
-	return true;
+	return i;
+	
 }
-void vivod(vector<komn> &a)//вывод на экран / в фаил 
+void vivod(komn *a,int dlinna)//вывод на экран / в фаил 
 {
 	cout << "1-В фаил\n2-На экран" << endl;
 	int x;
@@ -53,7 +53,7 @@ void vivod(vector<komn> &a)//вывод на экран / в фаил
 	int minS = a[0].S, minSi = 0;
 	int maxP = 0, maxPi;
 	int minP = a[0].P, minPi = 0;
-	for (int i = 0;i < a.size();i++)
+	for (int i = 0;i <dlinna;i++)
 	{
 		if (maxS < a[i].S) { maxS = a[i].S;maxSi = i; }
 		if (minS > a[i].S) { minS = a[i].S;minSi = i; }
@@ -89,9 +89,11 @@ int main()////
 	char file[20];
 	cout << "Введите имя фаила" << endl;
 	cin >> file;
-	vector<komn> a;
-	if (!schitivanie(a, file)) { return 0; }
-	vivod(a);
+	komn* st;
+	st = (komn*)malloc(1);
+	
+	int dlinna=schitivanie(st, file);
+	vivod(st,dlinna);
 
 	return 0;
 }

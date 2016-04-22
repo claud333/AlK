@@ -14,7 +14,7 @@ struct komn
 
 
 
-int schitivanie(komn *st, char *name) //открытие фаила 
+komn* schitivanie(komn *st, char *name,int &i) //открытие фаила 
 {
 	ifstream fin;
 	fin.open(name);
@@ -26,7 +26,7 @@ int schitivanie(komn *st, char *name) //открытие фаила
 	}
 
 
-	int ball, i = 0;
+	int ball;
 	
 	while (!fin.eof())
 	{
@@ -39,7 +39,8 @@ int schitivanie(komn *st, char *name) //открытие фаила
 		i++;
 	}
 	fin.close();
-	return i;
+
+	return st;
 	
 }
 void vivod(komn *a,int dlinna)//вывод на экран / в фаил 
@@ -91,9 +92,10 @@ int main()////
 	cin >> file;
 	komn* st;
 	st = (komn*)malloc(1);
-	
-	int dlinna=schitivanie(st, file);
-	vivod(st,dlinna);
+	int dlinna;
+	int i = 0;
+	st=schitivanie(st, file,i);
+	vivod(st,i);
 
 	return 0;
 }
